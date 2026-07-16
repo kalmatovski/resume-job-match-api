@@ -3,10 +3,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def preprocess_text(text:str) -> str:
     text = text.lower()
-    text = "".join(text.split())
+    text = " ".join(text.split())
     return text
 
-def calculate_match_score(resume_text:str,job_description:str) -> float:
+def calculate_match_score(resume_text:str,job_description:str, debug:bool = False) -> float:
     clean_resume = preprocess_text(resume_text)
     clean_job = preprocess_text(job_description)
 
@@ -15,7 +15,10 @@ def calculate_match_score(resume_text:str,job_description:str) -> float:
     text_vectors = vectorizer.fit_transform(
         [clean_resume, clean_job]
     )
-    print("TF-IDF features:", vectorizer.get_feature_names_out())
+
+    if debug:
+        features = vectorizer.get_feature_names_out()
+        print("TF-IDF features:", features)
 
     resume_vector = text_vectors[0]
 
@@ -26,56 +29,49 @@ def calculate_match_score(resume_text:str,job_description:str) -> float:
         job_vector
     )[0][0]
 
-    match_score = round(float(similarity), 3)
-
-    return match_score
+    return round(float(similarity), 3)
 
 
 if __name__ == "__main__":
-    resume = """
-    Python, pandas, scikit-learn, FastAPI
-"""
-    job_description = """
-    Python, SQL, Docker, FastAPI, ML piplines
-"""
-    score = calculate_match_score(
-        resume_text=resume,
-        job_description=job_description
-    )
+    # Тест 1: исходный пример
+    resume_1 = "Python pandas scikit-learn FastAPI"
 
-    print("Match score 1:", score)
+    job_1 = "Python SQL Docker FastAPI ML pipelines"
 
-    resume2 = "Python SQL Docker FastAPI"
-    job_description2= "Python SQL Docker FastAPI"
+    score_1 = calculate_match_score(resume_1, job_1, debug=True)
 
-    score2 = calculate_match_score(
-        resume_text=resume2,
-        job_description=job_description2
-    )
-
-    print("Match score 2:", score2)
+    print("Match score 1:", score_1)
+    print()
 
 
-    resume3 = "Python pandas FastAPI"
-    job_description3 = "Python SQL Docker FastAPI"
+    # Тест 2: полное совпадение
+    resume_2 = "Python SQL Docker FastAPI"
 
-    score3 = calculate_match_score(
-        resume_text=resume3,
-        job_description=job_description3
-    )
+    job_2 = "Python SQL Docker FastAPI"
 
-    print("Match score 3:", score3)
+    score_2 = calculate_match_score(resume_2, job_2,debug=True)
 
-    
-    resume4 = "Python pandas numpy"
-    job_description4 = "AutoCAD construction architecture"
-
-    score4 = calculate_match_score(
-        resume_text=resume4,
-        job_description=job_description4
-    )
+    print("Match score 2:", score_2)
+    print()
 
 
+    # Тест 3: частичное совпадение
+    resume_3 = "Python pandas FastAPI"
 
-    print("Match score 4:", score4)
+    job_3 = "Python SQL Docker FastAPI"
+
+    score_3 = calculate_match_score(resume_3, job_3, debug=True)
+
+    print("Match score 3:", score_3)
+    print()
+
+
+    # Тест 4: нет совпадений
+    resume_4 = "Python pandas numpy"
+
+    job_4 = "AutoCAD construction architecture"
+
+    score_4 = calculate_match_score(resume_4, job_4, debug=True)
+
+    print("Match score 4:", score_4)
 
