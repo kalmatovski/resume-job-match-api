@@ -1,6 +1,8 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from app.skills import compare_skills
+
 def preprocess_text(text:str) -> str:
     text = text.lower()
     text = " ".join(text.split())
@@ -31,6 +33,17 @@ def calculate_match_score(resume_text:str,job_description:str, debug:bool = Fals
 
     return round(float(similarity), 3)
 
+def create_match_result(resume:str, job:str) -> dict:
+    score = calculate_match_score(resume_text=resume, job_description=job)
+    skills = compare_skills(resume,job)
+    return {
+        "match_score": score,
+        "matched_skills": skills["matched_skills"],
+        "missing_skills": skills["missing_skills"]
+    }
+
+
+
 
 if __name__ == "__main__":
     # Тест 1: исходный пример
@@ -38,10 +51,9 @@ if __name__ == "__main__":
 
     job_1 = "Python SQL Docker FastAPI ML pipelines"
 
-    score_1 = calculate_match_score(resume_1, job_1, debug=True)
+    result1 = create_match_result(resume_1, job_1)
 
-    print("Match score 1:", score_1)
-    print()
+    print(result1)
 
 
     # Тест 2: полное совпадение
@@ -49,10 +61,9 @@ if __name__ == "__main__":
 
     job_2 = "Python SQL Docker FastAPI"
 
-    score_2 = calculate_match_score(resume_2, job_2,debug=True)
+    result2 = create_match_result(resume_2, job_2)
 
-    print("Match score 2:", score_2)
-    print()
+    print(result2)
 
 
     # Тест 3: частичное совпадение
@@ -60,10 +71,9 @@ if __name__ == "__main__":
 
     job_3 = "Python SQL Docker FastAPI"
 
-    score_3 = calculate_match_score(resume_3, job_3, debug=True)
+    result3 = create_match_result(resume_3, job_3)
 
-    print("Match score 3:", score_3)
-    print()
+    print(result3)
 
 
     # Тест 4: нет совпадений
@@ -71,7 +81,7 @@ if __name__ == "__main__":
 
     job_4 = "AutoCAD construction architecture"
 
-    score_4 = calculate_match_score(resume_4, job_4, debug=True)
+    result4 = create_match_result(resume_4, job_4)
 
-    print("Match score 4:", score_4)
+    print(result4)
 
