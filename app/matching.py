@@ -43,45 +43,80 @@ def create_match_result(resume:str, job:str) -> dict:
     }
 
 
+def get_fit_level(match_score:float)->str:
+    if match_score >=0.60:
+        return "high"
+    elif match_score >=0.30:
+        return "medium"
+    else:
+        return "low"
 
+
+def create_recommendation(
+    fit_level: str,
+    missing_skills: list[str]
+) -> str:
+    # Если отсутствующих навыков нет
+    if not missing_skills:
+        return "Strong match. All detected job skills are covered."
+
+    skills_text = ", ".join(missing_skills)
+
+    if len(missing_skills) == 1:
+        skill_label = "this skill"
+    else:
+        skill_label = "these skills"
+
+    return (
+        f"{fit_level.capitalize()} match. "
+        f"Improve {skill_label}: {skills_text}."
+    )
 
 if __name__ == "__main__":
     # Тест 1: исходный пример
-    resume_1 = "Python pandas scikit-learn FastAPI"
+    # resume_1 = "Python pandas scikit-learn FastAPI"
 
-    job_1 = "Python SQL Docker FastAPI ML pipelines"
+    # job_1 = "Python SQL Docker FastAPI ML pipelines"
 
-    result1 = create_match_result(resume_1, job_1)
+    # result1 = create_match_result(resume_1, job_1)
 
-    print(result1)
-
-
-    # Тест 2: полное совпадение
-    resume_2 = "Python SQL Docker FastAPI"
-
-    job_2 = "Python SQL Docker FastAPI"
-
-    result2 = create_match_result(resume_2, job_2)
-
-    print(result2)
+    # print(result1)
 
 
-    # Тест 3: частичное совпадение
-    resume_3 = "Python pandas FastAPI"
+    # # Тест 2: полное совпадение
+    # resume_2 = "Python SQL Docker FastAPI"
 
-    job_3 = "Python SQL Docker FastAPI"
+    # job_2 = "Python SQL Docker FastAPI"
 
-    result3 = create_match_result(resume_3, job_3)
+    # result2 = create_match_result(resume_2, job_2)
 
-    print(result3)
+    # print(result2)
 
 
-    # Тест 4: нет совпадений
-    resume_4 = "Python pandas numpy"
+    # # Тест 3: частичное совпадение
+    # resume_3 = "Python pandas FastAPI"
 
-    job_4 = "AutoCAD construction architecture"
+    # job_3 = "Python SQL Docker FastAPI"
 
-    result4 = create_match_result(resume_4, job_4)
+    # result3 = create_match_result(resume_3, job_3)
 
-    print(result4)
+    # print(result3)
+
+
+    # # Тест 4: нет совпадений
+    # resume_4 = "Python pandas numpy"
+
+    # job_4 = "AutoCAD construction architecture"
+
+    # result4 = create_match_result(resume_4, job_4)
+
+    # print(result4)
+    print(create_recommendation("medium", ["docker", "sql"]))
+# Medium match. Improve these skills: docker, sql.
+
+    print(create_recommendation("high", ["docker"]))
+# High match. Improve this skill: docker.
+
+    print(create_recommendation("high", []))
+# Strong match. All detected job skills are covered.
 
