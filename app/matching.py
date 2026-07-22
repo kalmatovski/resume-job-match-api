@@ -36,10 +36,14 @@ def calculate_match_score(resume_text:str,job_description:str, debug:bool = Fals
 def create_match_result(resume:str, job:str) -> dict:
     score = calculate_match_score(resume_text=resume, job_description=job)
     skills = compare_skills(resume,job)
+    fit_level = get_fit_level(score)
+    recommendation = create_recommendation(fit_level=fit_level, missing_skills=skills["missing_skills"])
     return {
         "match_score": score,
         "matched_skills": skills["matched_skills"],
-        "missing_skills": skills["missing_skills"]
+        "missing_skills": skills["missing_skills"],
+        "fit_level":fit_level,
+        "recommendation":recommendation
     }
 
 
