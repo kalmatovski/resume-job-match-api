@@ -28,3 +28,16 @@ def test_match_missing_resume_text():
     response = client.post("/match",json=request_body)
 
     assert response.status_code == 422
+
+def test_match_empty_resume_text():
+    request_data = {
+        "resume_text": "",
+        "job_description": "Python SQL Docker FastAPI ML pipelines"
+    }
+
+    response = client.post(
+        "/match",
+        json=request_data
+    )
+
+    assert response.status_code == 422

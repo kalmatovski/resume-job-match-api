@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class MatchRequest(BaseModel):
-    resume_text: str
-    job_description: str
+    resume_text: str = Field(min_length=10)
+    job_description: str = Field(min_length=10)
 
 
 class MatchResponse(BaseModel):
