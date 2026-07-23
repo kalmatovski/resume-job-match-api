@@ -1,0 +1,14 @@
+{
+  "high_match": {
+    "resume_text": "Hi! I'm a backend developer with experience in Python, SQL, Docker, FastAPI",
+    "job_description": "We are seeking a backend developer who is able to use Python, SQL, Docker, FastAPI"
+  },
+  "medium_match": {
+    "resume_text": "Experience: I've worked as a software engineer at Meta. We used Java, PostgreSQL, Kubernetes, and Docker.",
+    "job_description": "Required skills: Docker, PostgreSQL, JavaScript, and Kafka."
+  },
+  "low_match": {
+    "resume_text": "JavaScript, C++, C#, HTML",
+    "job_description": "Required skills: Go, Swift, and CSS."
+  }
+}
