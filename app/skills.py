@@ -42,24 +42,3 @@ def compare_skills(resume_text:str, job_description:str) -> dict:
         "matched_skills": sorted(matched_skills),
         "missing_skills": sorted(missing_skills)
     }
-
-
-if __name__ == "__main__":
-    # Тестовые данные
-    resume = """
-    I have experience with Python, pandas,
-    scikit-learn and FastAPI.
-    """
-
-    job_description = """
-    We are looking for a developer with Python,
-    SQL, Docker, FastAPI and Git experience.
-    """
-
-    result = compare_skills(
-        resume_text=resume,
-        job_description=job_description
-    )
-
-    print("Matched skills:", result["matched_skills"])
-    print("Missing skills:", result["missing_skills"])
